@@ -26,6 +26,7 @@ formDiv.append(monsterForm)
 monsterForm.addEventListener('submit', (e)=>{
     e.preventDefault();
     postFetch(e)
+    monsterForm.reset()
 })
 
 const postFetch = (e) => {
