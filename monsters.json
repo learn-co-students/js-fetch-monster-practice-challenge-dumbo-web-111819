@@ -50,7 +50,7 @@
     },
     {
       "name": "Gaia",
-      "age": 4892.092518802611,
+      "age": "4890",
       "description": "Effulgence antediluvian tentacles abnormal. Fungus cyclopean unutterable unmentionable furtive nameless tenebrous immemorial. Furtive fungus fainted. Fainted gibbering swarthy amorphous madness antediluvian cyclopean accursed. Cyclopean indescribable accursed gambrel tentacles noisome.",
       "id": 9
     },
@@ -5960,7 +5960,7 @@
     },
     {
       "name": "Nesoi",
-      "age": 2186.749057571432,
+      "age": "2101",
       "description": "Charnel comprehension fungus cat non-euclidean. Unmentionable loathsome furtive lurk indescribable accursed blasphemous. Indescribable abnormal amorphous lurk fungus. Gibbous squamous gibbering.",
       "id": 994
     },
@@ -6007,10 +6007,16 @@
       "id": 1006
     },
     {
-      "name": "sadgafde",
-      "age": "erwefdsa",
-      "description": "csvfdae",
+      "name": ";jghkldsf",
+      "age": "55",
+      "description": "66",
       "id": 1007
+    },
+    {
+      "name": "cris angel",
+      "age": "43",
+      "description": "astronaut",
+      "id": 1008
     }
   ]
 }

@@ -14,6 +14,8 @@ let numberOfMonstersPerPage = 5;
 let totalNumberOfMonsters;
 let lastPage;
 
+////////////////////////////// LOAD PAGE
+
 function loadPage(pageNumber){
   monsterContainer.textContent = '';
 
@@ -65,32 +67,38 @@ function deleteMonster(monster) {
   })
 };
 
-function renderMonsterForm(name="name...", age="age...", description="description...", targetContainer=monsterFormContainer, id) {
+/////////////////////////// FORM
 
+function renderMonsterForm(name="name...", age="age...", description="description...", targetContainer=monsterFormContainer, id) {
+  // debugger
   const form = document.createElement("form");
   const inputName = document.createElement("input");
-    inputName.id = "name";
-    inputName.placeholder = name;
+  inputName.id = "name";
+  inputName.placeholder = name;
   const inputAge = document.createElement("input");
-    inputAge.id = "age";
-    inputAge.placeholder = age;
+  inputAge.id = "age";
+  inputAge.placeholder = age;
   const inputDescription = document.createElement("input");
-    inputDescription.id = "description";
-    inputDescription.placeholder = description;
+  inputDescription.id = "description";
+  inputDescription.placeholder = description;
   const buttonCreate = document.createElement("button");
-    buttonCreate.innerText = "Create";
+  buttonCreate.innerText = "Create";
   form.append(inputName,inputAge,inputDescription,buttonCreate);
   targetContainer.append(form);
-
+  
   if (targetContainer === monsterFormContainer) {
     form.addEventListener('submit', (e) => {
       e.preventDefault();
       submitForm(inputName, inputAge, inputDescription, form);
     })
   } else {
+    // debugger
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      updateMonster(inputName, inputAge, inputDescription, form, id)
+      if (inputName.value === ''){inputName.value = name}
+      if (inputAge.value === ''){inputAge.value = age}
+      if (inputDescription.value === ''){inputDescription.value = description}
+      updateMonster(inputName.value, inputAge.value, inputDescription.value, form, id)
     })
   }
 };
@@ -98,9 +106,9 @@ function renderMonsterForm(name="name...", age="age...", description="descriptio
 renderMonsterForm();
 
 let toggler = 2;
-function toggleUpdateMonster(name, age, description, container) {
+function toggleUpdateMonster(name, age, description, container, id) {
   if (toggler > 0) {
-    container.append(renderMonsterForm(name, age, description, container));
+    container.append(renderMonsterForm(name, age, description, container, id));
     toggler = -2;
   } else if (toggler === 0) {
     container.innerHTML = "";
@@ -110,6 +118,8 @@ function toggleUpdateMonster(name, age, description, container) {
     toggler = 2
   }
 };
+
+//////////////////////////// FETCH
 
 function submitForm(inputName, inputAge, inputDescription, form){
   fetch(`${URL_PREFIX}monsters`, {
@@ -134,7 +144,6 @@ function submitForm(inputName, inputAge, inputDescription, form){
 };
 
 function updateMonster(inputName, inputAge, inputDescription, form, id) {
-  // let monsterDiv = monsterContainer.querySelector(`[data-id="${monster.id}"]`)
   fetch(`${URL_PREFIX}monsters/${id}`, {
     method: "PATCH",
     headers: {
@@ -142,53 +151,59 @@ function updateMonster(inputName, inputAge, inputDescription, form, id) {
       "Accept": "application/json"
     },
     body: JSON.stringify({
-      name: inputName.value,
-      age: inputAge.value,
-      description: inputDescription.value
+      name: inputName,
+      age: inputAge,
+      description: inputDescription
     })
   })
   .then(r => r.json())
   .then(() => {
     setLastPage()
-    pageNumber = lastPage
+    pageNumber = (setLastPage(id)) // why do i need -1 here ?
     loadPage(pageNumber)
   })
   form.reset()
 };
 
+////////////////////////////// NAVIGATION
+
 firstPageButton.addEventListener('click', () => {
   pageNumber = 1
   loadPage(pageNumber)
 });
-
 backButton.addEventListener('click', () => {
   if (pageNumber >= 2) {
     pageNumber--
     loadPage(pageNumber)
   }
 });
-
 showPageNumber.addEventListener('click', () => {
   loadPage(pageNumber)
 });
-
-function renderShowPageNumber(pageNumber){
+function renderShowPageNumber(){
   showPageNumber.innerText = pageNumber
 };
-
 forwardButton.addEventListener('click', () => {
   pageNumber++
   loadPage(pageNumber)
 });
-
 lastPageButton.addEventListener('click', () => {
   setLastPage()
   pageNumber = lastPage
   loadPage(pageNumber)
 });
 
-function setLastPage() {
-  lastPage = Math.ceil(totalNumberOfMonsters / numberOfMonstersPerPage)
+// const form = document.createElement("form");
+// const inputNumber = document.createElement("input");
+// inputNumber.id = "number";
+// inputNumber.placeholder = pageNumber;
+// const button = document.createElement("button");
+// button.innerText = "Change Page";
+// form.append(inputNumber,button);
+// document.append(form);
+
+function setLastPage(idOrTotal=totalNumberOfMonsters) {
+  return lastPage = Math.ceil(idOrTotal / numberOfMonstersPerPage)
 };
 
 // -------------
